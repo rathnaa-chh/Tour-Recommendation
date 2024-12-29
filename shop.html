@@ -1,0 +1,438 @@
+<style>
+    #New .box-card .row .col-xl-4:nth-child(1){
+        display: none;
+    }
+
+   h2 {
+        text-transform: uppercase;
+    }
+
+    .category ul {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .category ul li {
+        width: 90%;
+        padding: 15px 10px;
+    }
+
+    .category ul li:nth-child(2), .category ul li:nth-child(4) {
+        background-color: rgb(239, 201, 8);
+    }
+
+    .category ul li a {
+        text-decoration: none;
+        text-transform: uppercase;
+        color: #333;
+        font-weight: bold;
+    }
+
+    .category ul li:nth-child(2) a, .category ul li:nth-child(4) a {
+        color: #fff;
+    }
+
+    .price {
+        display: flex;
+        gap: 15px;
+    }
+
+    @media (max-width: 575.98px) {
+        #New .box-card .row .col-xl-4:nth-child(1) {
+            display: block;
+        }
+
+        .category h2 {
+            text-align: center;
+        }
+
+        .price {
+            display: flex;
+            justify-content: center;
+        }
+
+        #relate {
+            display: block; /* Ensure related products are always shown */
+        }
+    }
+</style>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-xl-8">
+            <article id="New">
+                <div class="box-card" id="newpro">
+                    <h2 class="text-center">New Products</h2>
+                    <div class="row" id="newShop"></div>
+                </div>
+            </article>
+        </div>
+        <div class="col-12 col-xl-4">
+            <div class="category py-5">
+                <h2 class="mb-3">CATEGORIES</h2>
+                <ul>
+                    <li><a href="./men.html">Man</a></li>
+                    <li><a href="./women.html">Woman</a></li>
+                    <li><a href="./boy.html">Boy</a></li>
+                    <li><a href="./girl.html">Girl</a></li>
+                </ul>
+                <h2>PROMOTIONS</h2>
+                <div class="price ps-3">
+                    <button class="btn btn-outline-danger my-3" id="promotionButton">Show Promotions</button>
+                </div>
+                <h2>PRICE</h2>
+                <div class="price w-100 ps-3">
+                    <button class="btn btn-outline-warning">Low Price</button>
+                    <button class="btn btn-outline-warning">High Price</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Related Products Section -->
+    <article id="relate" class="py-5">
+        <div class="box-card container">
+            <h2 class="text-center">Related Products</h2>
+            <div class="row" id="relatedProduct"></div>
+        </div>
+    </article>
+</div>
+
+<!-- <script type="module">
+    import { products } from './data.js';  // Import products from data.js
+
+    $(document).ready(() => {
+        let isPromotion = false;  // Variable to track if we are showing promotion products
+
+        // Function to display the new products (top 3)
+        const getNewProduct = () => {
+            let card = '';
+            products.slice(0, 4).forEach(val => {
+                card += `
+                    <div class="col-6 col-xl-4 mt-3">
+                        <div class="card" data-id="${val.id}">
+                            <div class="image">
+                                <img class="w-100" src="${val.image}" alt="">
+                            </div>
+                            <div class="title p-2">
+                                <span><b>US ${val.sale_price}</b></span>
+                                <p>${val.title}</p>
+                                <div class="icon">
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            $('#newShop').html(card);
+        };
+
+        // Function to display promotion products (where sale_price < regular_price)
+        const getPromotionProduct = () => {
+            let card = '';
+            const promotionProducts = products.filter(val => val.sale_price < val.reqular_price);
+            promotionProducts.forEach(val => {
+                card += `
+                    <div class="col-6 col-xl-4 mt-3">
+                        <div class="card" data-id="${val.id}">
+                            <div class="promotion">
+                                <span>Promotion</span>
+                            </div>
+                            <div class="image">
+                                <img class="w-100" src="${val.image}" alt="">
+                            </div>
+                            <div class="title p-2">
+                                <del class="text-danger"><b>US ${val.reqular_price}</b></del>
+                                <span class="ms-3"><b>US ${val.sale_price}</b></span>
+                                <p>${val.title}</p>
+                                <div class="icon">
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            $('#newShop').html(card);
+        };
+
+        // Function to display related products (you can customize this logic as per your needs)
+        const getRelatedProduct = () => {
+            let card = '';
+            // Display products that are not promotion (just as an example)
+            products.slice(3, 7).forEach(val => {
+                card += `
+                    <div class="col-6 col-xl-3 mt-3">
+                        <div class="card" data-id="${val.id}">
+                            <div class="image">
+                                <img class="w-100" src="${val.image}" alt="">
+                            </div>
+                            <div class="title p-2">
+                                <span><b>US ${val.sale_price}</b></span>
+                                <p>${val.title}</p>
+                                <div class="icon">
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            $('#relatedProduct').html(card);
+        };
+
+        // Initially load the new products
+        getNewProduct();
+
+        // Initially load related products
+        getRelatedProduct();
+
+        // Event listener for the promotion button
+        $('#promotionButton').click(() => {
+            isPromotion = !isPromotion;  // Toggle the flag
+            if (isPromotion) {
+                getPromotionProduct();
+                $('#promotionButton').text('Show New Products');  // Change button text to "Show New Products"
+            } else {
+                getNewProduct();
+                $('#promotionButton').text('Show Promotions');  // Change button text to "Show Promotions"
+            }
+        });
+    });
+</script> -->
+<script type="module">
+    import { products } from './data.js'; // Import your products data
+
+    $(document).ready(() => {
+        let currentView = "new"; // To track the current view (new or promotion)
+
+        // Function to render the product list based on the current view (new or promotion)
+        const renderProducts = (productsToShow) => {
+            let card = '';
+            productsToShow.forEach((val, index) => {
+                if (index < 4) { // Show 3 products max
+                    if (val.reqular_price === 0) {
+                        card += `
+                            <div class="col-6 col-xl-4 mt-3">
+                                <div class="card" data-id="${val.id}">
+                                    <div class="image">
+                                        <img class="w-100" src="${val.image}" alt="">
+                                    </div>
+                                    <div class="title p-2">
+                                        <span><b>US ${val.sale_price}</b></span>
+                                        <p>${val.title}</p>
+                                        <div class="icon">
+                                            <i class="bi bi-star"></i>
+                                            <i class="bi bi-star"></i>
+                                            <i class="bi bi-star"></i>
+                                            <i class="bi bi-star"></i>
+                                            <i class="bi bi-star"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>`;
+                    } else {
+                        card += `
+                            <div class="col-6 col-xl-4 mt-3">
+                                <div class="card" data-id="${val.id}">
+                                    <div class="promotion">
+                                        <span>Promotion</span>
+                                    </div>
+                                    <div class="image">
+                                        <img class="w-100" src="${val.image}" alt="">
+                                    </div>
+                                    <div class="title p-2">
+                                        <del class="text-danger"><b>US ${val.reqular_price}</b></del>
+                                        <span class="ms-3"><b>US ${val.sale_price}</b></span>
+                                        <p>${val.title}</p>
+                                        <div class="icon">
+                                            <i class="bi bi-star"></i>
+                                            <i class="bi bi-star"></i>
+                                            <i class="bi bi-star"></i>
+                                            <i class="bi bi-star"></i>
+                                            <i class="bi bi-star"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>`;
+                    }
+                }
+            });
+            $('#newShop').html(card);
+        };
+
+        // Function to filter only promotional products
+        const getPromotionProducts = () => {
+            return products.filter(product => product.reqular_price > 0 && product.sale_price < product.reqular_price);
+        };
+
+        // Function to handle low and high price sorting
+        const sortByPrice = (order) => {
+            let sortedProducts = currentView === "new" ? products : getPromotionProducts();
+
+            sortedProducts.sort((a, b) => {
+                if (order === "low") {
+                    return a.sale_price - b.sale_price;
+                } else if (order === "high") {
+                    return b.sale_price - a.sale_price;
+                }
+            });
+
+            renderProducts(sortedProducts);
+        };
+
+        // Load initial new products
+        renderProducts(products);
+
+        // Handle the Promotion button click
+        $('.btn-outline-danger').click(() => {
+            currentView = "promotion";
+            renderProducts(getPromotionProducts());
+        });
+
+        // Handle the Low Price button click
+        $('.btn-outline-warning').eq(0).click(() => {
+            sortByPrice("low");
+        });
+
+        // Handle the High Price button click
+        $('.btn-outline-warning').eq(1).click(() => {
+            sortByPrice("high");
+        });
+    });
+</script>
+<!-- <script type="module">
+    import { products } from './data.js'; // Import your products data
+
+    $(document).ready(() => {
+        let currentView = "new"; // To track the current view (new or promotion)
+        let currentCategory = ""; // To track the selected category
+
+        // Function to render the product list based on the current view and selected category
+        const renderProducts = (productsToShow) => {
+            let card = '';
+            productsToShow.forEach((val, index) => {
+                if (index < 3) { // Show 3 products max
+                    if (val.reqular_price === 0) {
+                        card += `
+                            <div class="col-6 col-xl-4 mt-3">
+                                <div class="card" data-id="${val.id}">
+                                    <div class="image">
+                                        <img class="w-100" src="${val.image}" alt="">
+                                    </div>
+                                    <div class="title p-2">
+                                        <span><b>US ${val.sale_price}</b></span>
+                                        <p>${val.title}</p>
+                                        <div class="icon">
+                                            <i class="bi bi-star"></i>
+                                            <i class="bi bi-star"></i>
+                                            <i class="bi bi-star"></i>
+                                            <i class="bi bi-star"></i>
+                                            <i class="bi bi-star"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>`;
+                    } else {
+                        card += `
+                            <div class="col-6 col-xl-4 mt-3">
+                                <div class="card" data-id="${val.id}">
+                                    <div class="promotion">
+                                        <span>Promotion</span>
+                                    </div>
+                                    <div class="image">
+                                        <img class="w-100" src="${val.image}" alt="">
+                                    </div>
+                                    <div class="title p-2">
+                                        <del class="text-danger"><b>US ${val.reqular_price}</b></del>
+                                        <span class="ms-3"><b>US ${val.sale_price}</b></span>
+                                        <p>${val.title}</p>
+                                        <div class="icon">
+                                            <i class="bi bi-star"></i>
+                                            <i class="bi bi-star"></i>
+                                            <i class="bi bi-star"></i>
+                                            <i class="bi bi-star"></i>
+                                            <i class="bi bi-star"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>`;
+                    }
+                }
+            });
+            $('#newShop').html(card);
+        };
+
+        // Function to filter products by category
+        const filterByCategory = (category) => {
+            if (category === "") {
+                renderProducts(products); // Show all products if no category is selected
+            } else {
+                const filteredProducts = products.filter(product => product.category.toLowerCase() === category.toLowerCase());
+                renderProducts(filteredProducts);
+            }
+        };
+
+        // Function to filter only promotional products
+        const getPromotionProducts = () => {
+            return products.filter(product => product.reqular_price > 0 && product.sale_price < product.reqular_price);
+        };
+
+        // Function to handle low and high price sorting
+        const sortByPrice = (order) => {
+            let sortedProducts = currentView === "new" ? products : getPromotionProducts();
+
+            sortedProducts.sort((a, b) => {
+                if (order === "low") {
+                    return a.sale_price - b.sale_price;
+                } else if (order === "high") {
+                    return b.sale_price - a.sale_price;
+                }
+            });
+
+            renderProducts(sortedProducts);
+        };
+
+        // Load initial new products
+        renderProducts(products);
+
+        // Handle the Promotion button click
+        $('.btn-outline-danger').click(() => {
+            currentView = "promotion";
+            renderProducts(getPromotionProducts());
+        });
+
+        // Handle the Low Price button click
+        $('.btn-outline-warning').eq(0).click(() => {
+            sortByPrice("low");
+        });
+
+        // Handle the High Price button click
+        $('.btn-outline-warning').eq(1).click(() => {
+            sortByPrice("high");
+        });
+
+        // Category button click event listeners
+        $('.category ul li a').click(function() {
+            const category = $(this).text().toLowerCase(); // Get the category name
+            currentCategory = category;
+            filterByCategory(category);
+        });
+    });
+</script> -->
+
+

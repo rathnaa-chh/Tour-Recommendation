@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    
+</style>
+<body>
+    <div class="row mb-5 mt-5">
+        <div class="col-6 p-0">
+             <div class="w-100 d-flex justify-content-center">
+                  <img class="w-75" src="https://via.placeholder.com/300x450" alt="">
+             </div>
+        </div>
+        <div class="col-6 p-0">
+             <div class="detail w-100 p-4">
+                  <h1 class="text-dark mb-3">T-shirt</h1>
+                  <div class="price">
+                       <ul>
+                            <li class="fs-4 mb-3">PRICE</li>
+                            <ol>
+                                 <del class="text-danger fs-5">- $95.90 (US)</del>
+                                 <p class="text-success fs-5 mt-3">- $90.95 (US)</p>
+                            </ol>
+                       </ul>
+                  </div>
+                  <div class="category">
+                       <ul>
+                            <li class="fs-4 mb-3">CATEGORY</li>
+                            <ol>
+                                 <p class="text-secondary fs-5 mt-3">- Woman</p>
+                            </ol>
+                       </ul>
+                  </div>
+                  <div class="color">
+                       <ul>
+                            <li class="fs-4 mb-3">COLOR</li>
+                            <ol>
+                                 <p class="fs-6 text-secondary">Red,Blue,Yellow</p>
+                            </ol>
+                       </ul>
+                  </div>
+                  <div class="size">
+                       <ul>
+                            <li class="fs-4 mb-3">SIZE</li>
+                            <ol>
+                                 <p class="fs-6 text-secondary">XXL,XL,L,S,XS</p>
+                            </ol>
+                       </ul>
+                  </div>
+                  <div class="buy mb-5">
+                       <ul>
+                            <li class="fs-4 mb-3">BUY</li>
+                       </ul>
+                       <div class="d-flex align-items-center gap-2">
+                            <input type="number" value="1" class="txtBoxBuy form-control w-25 text-center">
+                            <button class="text-light btn btn-primary">Add To Cart</button>
+                       </div>
+                       
+                  </div>
+                  <div class="description">
+                       <ul>
+                            <li class="fs-4 mb-3">DESCRIPTON</li>
+                            <ol>
+                                 <p class="fs-6 text-secondary">Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae eligendi dolore at modi id cupiditate ipsa, iusto explicabo veritatis magni!</p>
+                            </ol>
+                       </ul>
+                  </div>
+             </div>
+        </div>
+    </div>
+    <script type="module">
+        import {products} from './data.js'
+        function getProductId() {
+          const urlParams = new URLSearchParams(window.location.search);
+          return urlParams.get('id'); // Returns the product ID from ?id=1
+        }
+        const productId = getProductId();
+        console.log(productId);
+        products.forEach(e=>{
+            if(productId==e.id){
+                console.log(e);
+                
+            }
+        })
+    </script>
+</body>
+</html>
