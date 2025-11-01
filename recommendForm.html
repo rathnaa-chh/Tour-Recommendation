@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tour Recommendation</title>
+  <style>
+    body { 
+      font-family: Arial, sans-serif; 
+      padding: 20px; 
+      background-color: #f9f9f9;
+    }
+
+    h2 { color: #2e6d2e; }
+
+    .tour-card, .search-card {
+      border: 1px solid #ddd;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      display: flex;
+      gap: 15px;
+      background-color: #fff;
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+    }
+
+    .tour-card:hover, .search-card:hover {
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .tour-card img, .search-card img {
+      width: 150px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 5px;
+    }
+
+    .tour-info h3, .search-info h3 { 
+      margin: 0; 
+      color: #1a4d1a;
+    }
+
+    .tour-info p, .search-info p { 
+      margin: 5px 0; 
+      color: #333;
+    }
+
+    .search-bar {
+      margin-top: 20px;
+      display: flex;
+      gap: 10px;
+    }
+
+    input, select, button {
+      font-size: 14px;
+      padding: 8px;
+    }
+
+    button {
+      background-color: #2e6d2e;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 3px;
+    }
+
+    button:hover {
+      background-color: #245624;
+    }
+    .search-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 40px;
+  gap: 10px;
+}
+
+.search-section input {
+  width: 300px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.search-section button {
+  background-color: #2e6d2e;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.search-section button:hover {
+  background-color: #245624;
+}
+
+
+  </style>
+</head>
+<body>
+  <h2>Tour Recommendations</h2>
+
+  <label for="location">Choose your location:</label>
+  <select id="location">
+    <option value="Phnom Penh">Phnom Penh</option>
+    <option value="Siem Reap">Siem Reap</option>
+    <option value="Koh Kong">Koh Kong</option>
+    <option value="Preah Sihanouk">Preah Sihanouk</option>
+    <option value="Kampot">Kampot</option>
+    <option value="Kep">Kep</option>
+    <option value="Kampong Speu">Kampong Speu</option>
+    <option value="Preah Vihear">Preah Vihear</option>
+    <option value="Battambang">Battambang</option>
+    <option value="Banteay Meanchey">Banteay Meanchey</option>
+    <option value="Kandal">Kandal</option>
+    <option value="Pursat">Pursat</option>
+    <option value="Takeo">Takeo</option>
+    <option value="Stung Treng">Stung Treng</option>
+    <option value="Kratie">Kratie</option>
+    <option value="Mondulkiri">Mondulkiri</option>
+    <option value="Ratanakiri">Ratanakiri</option>
+    <option value="Oddar Meanchey">Oddar Meanchey</option>
+    <option value="Prey Veng">Prey Veng</option>
+    <option value="Svay Rieng">Svay Rieng</option>
+    <option value="Tboung Khmum">Tboung Khmum</option>
+    <option value="Kampong Cham">Kampong Cham</option>
+    <option value="Kampong Chhnang">Kampong Chhnang</option>
+    <option value="Kampong Thom">Kampong Thom</option>
+    <option value="Pailin">Pailin</option>
+  </select>
+  <button id="recommend-btn">Recommend</button>
+
+  <div id="recommendations" class="mt-4"></div>
+
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Search places...">
+    <button id="search-btn">Search</button>
+  </div>
+
+  <div id="searchResults" class="mt-4"></div>
+
+  <script type="module">
+    import { places } from './data.js';
+
+    // --- Recommendation feature ---
+    function recommendPlaces(userLocation) {
+      return places
+        .filter(place => place.province === userLocation)
+        .sort((a, b) => b.views - a.views);
+    }
+
+    function showRecommendations() {
+      const userLocation = document.getElementById("location").value;
+      const recommended = recommendPlaces(userLocation);
+      const container = document.getElementById("recommendations");
+      container.innerHTML = "";
+
+      if (recommended.length === 0) {
+        container.innerHTML = "<p>No tours available.</p>";
+        return;
+      }
+
+      recommended.forEach(place => {
+        const card = document.createElement("div");
+        card.className = "tour-card";
+        card.innerHTML = `
+          <img src="${place.image}" alt="${place.title}">
+          <div class="tour-info">
+            <h3>${place.title}</h3>
+            <p><strong>Category:</strong> ${place.category}</p>
+            <p><strong>Province:</strong> ${place.province}</p>
+            <p>${place.description}</p>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    document.getElementById("recommend-btn").addEventListener("click", showRecommendations);
+
+    // --- Search feature ---
+    function searchPlaces(query) {
+      return places.filter(place =>
+        place.title.toLowerCase().includes(query) ||
+        place.category.toLowerCase().includes(query) ||
+        (place.province && place.province.toLowerCase().includes(query)) ||
+        place.description.toLowerCase().includes(query)
+      );
+    }
+
+    function showSearchResults() {
+      const query = document.getElementById("searchInput").value.trim().toLowerCase();
+      const results = searchPlaces(query);
+      const container = document.getElementById("searchResults");
+      container.innerHTML = "";
+
+      if (results.length === 0) {
+        container.innerHTML = "<p>No places found.</p>";
+        return;
+      }
+
+      results.forEach(place => {
+        const card = document.createElement("div");
+        card.className = "search-card";
+        card.innerHTML = `
+          <img src="${place.image}" alt="${place.title}">
+          <div class="search-info">
+            <h3>${place.title}</h3>
+            <p><strong>Category:</strong> ${place.category}</p>
+            <p><strong>Province:</strong> ${place.province}</p>
+            <p>${place.description.substring(0, 120)}...</p>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    document.getElementById("search-btn").addEventListener("click", showSearchResults);
+  </script>
+</body>
+</html>
